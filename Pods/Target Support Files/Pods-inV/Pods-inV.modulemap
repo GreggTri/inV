@@ -1,6 +1,0 @@
-framework module Pods_inV {
-  umbrella header "Pods-inV-umbrella.h"
-
-  export *
-  module * { export * }
-}
