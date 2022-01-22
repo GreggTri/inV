@@ -8,14 +8,21 @@
 import SwiftUI
 
 struct BrandInfoView: View {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
+    let brand: SellerModel
+    
     var body: some View {
         VStack{
             HStack{
                 Image(systemName: "arrow.backward")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 25)
+                    .frame(width: 24)
                     .foregroundColor(inVGreen)
+                    .onTapGesture {
+                        presentationMode.wrappedValue.dismiss()
+                    }
                 Spacer()
                 Text("Brand Information")
                     .font(.title2)
@@ -25,26 +32,31 @@ struct BrandInfoView: View {
             .padding(.all)
             HStack{
                 Image(systemName: "phone.circle.fill")
-                Text("(+1)203-482-8850")
+                Text("\(brand.customerService.cs_phone)")
+                    .foregroundColor(inVGreen)
                 Spacer()
             }
             .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             HStack{
                 Image("emailIcon")
-                Text("support@trimarchi.com").foregroundColor(inVGreen).underline()
+                Text("\(brand.customerService.cs_email)").underline()
+                    
                 Spacer()
             }
             .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+            .foregroundColor(inVGreen)
             BoxedPolicy(title: "Return Policy",
-                        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu dictum felis. Ut fermentum luctus placerat. Mauris et mauris ac magna tempor suscipit nec convallis magna. Phasellus varius metus quis volutpat fermentum. Vestibulum vitae semper risus. Curabitur lobortis justo a ligula fringilla pulvinar. Praesent malesuada ante tortor, eget tincidunt risus placerat rhoncus."
+                        content: "\(brand.customerService.return_policy)"
             )
             Spacer()
             BoxedPolicy(title: "Warranty Policy",
-                        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu dictum felis. Ut fermentum luctus placerat. Mauris et mauris ac magna tempor suscipit nec convallis magna. Phasellus varius metus quis volutpat fermentum. Vestibulum vitae semper risus. Curabitur lobortis justo a ligula fringilla pulvinar. Praesent malesuada ante tortor, eget tincidunt risus placerat rhoncus."
+                        content: "\(brand.customerService.warranty_policy)"
             )
             
             Spacer()
         }.preferredColorScheme(.dark)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarHidden(true)
     }
 }
 
@@ -58,7 +70,7 @@ struct BoxedPolicy: View{
         ZStack{
             VStack(){
                 Text(title)
-                    .foregroundColor(.white)
+                    .foregroundColor(inVGreen)
                     .font(.title3)
                     .multilineTextAlignment(.leading)
                     .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
@@ -75,6 +87,7 @@ struct BoxedPolicy: View{
                 .cornerRadius(25)
                 
         }
+        .padding(.bottom)
     }
 }
 
@@ -82,8 +95,8 @@ struct BoxedPolicy: View{
 
 
 //MARK: Preview
-struct BrandInfoView_Previews: PreviewProvider {
-    static var previews: some View {
-        BrandInfoView()
-    }
-}
+//struct BrandInfoView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        BrandInfoView(brand: _)
+//    }
+//}

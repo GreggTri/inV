@@ -11,7 +11,8 @@ import SceneKit
 
 struct ARProductView: View {
     @ObservedObject var arDelegate = ARDelegate()
-    
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    let product: ProductModel
     var body: some View {
         ZStack{
             VStack(spacing: 0.0){
@@ -23,6 +24,9 @@ struct ARProductView: View {
                         .foregroundColor(.green)
                         .padding([.top, .leading])
                         .padding(.top, 3.0)
+                        .onTapGesture {
+                            presentationMode.wrappedValue.dismiss()
+                        }
                     Spacer()
                     Text("Prada Linea Series")
                         .font(.title2)
@@ -88,14 +92,16 @@ struct ARProductView: View {
             
         }.edgesIgnoringSafeArea(.all)
         .preferredColorScheme(.dark)
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarHidden(true)
     }
 }
 
 
 
 
-struct ARProductView_Previews: PreviewProvider {
-    static var previews: some View {
-        ARProductView()
-    }
-}
+//struct ARProductView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ARProductView()
+//    }
+//}

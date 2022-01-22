@@ -10,6 +10,9 @@ import SwiftUI
 struct HomeView: View {
     @State var search: String = ""
     @State var menuOpened: Bool = false
+    @StateObject var brandFetcher = BrandFetcher()
+    @StateObject var productFetcher = ProductFetcher()
+    //@ObservableObject var Brands = BrandsViewModel()
     
     var body: some View {
         
@@ -36,9 +39,12 @@ struct HomeView: View {
                             
                         Spacer()
                             
-                        Image(systemName: "cart.fill")
-                            .foregroundColor(inVGreen)
+                        NavigationLink(destination: CartView()) {
+                            Image(systemName: "cart.fill")
+                                .foregroundColor(inVGreen)
                             .padding(.horizontal)
+                        }.navigationBarHidden(true)
+                            .navigationBarTitleDisplayMode(.inline)
                     }
                     .padding(.top)
                     
@@ -51,18 +57,35 @@ struct HomeView: View {
                         .font(.title)
                         .fontWeight(.semibold)
                         .padding(.leading)
-                    LazyVGrid(columns: [GridItem(.flexible())]){
-                        ForEach(1..<7, id: \.self){ i in
-                            ProductCell()
-                                .padding(.all, 5.0)
+                    if productFetcher.isLoading{
+                        ProgressView()
+                    }
+                    else if productFetcher.errorMessage != nil {
+                        Text(productFetcher.errorMessage ?? "")
+                    }
+                    else{
+                        LazyVGrid(columns: [GridItem(.flexible())]){
+                            ForEach(productFetcher.Products, id: \._id){ product in
+                                ProductCell(product: product)
+                                        .padding(.all, 5.0)
+                            }
                         }
                     }
+                    
                 }
             }
             SideMenu(width: 220, menuOpened: menuOpened, toggleMenu: toggleMenu)
         }.zIndex(1.0)
         .preferredColorScheme(.dark)
+        .onAppear {
+            brandFetcher.fetch10Brands()
+            //productFetcher.fetch10Products()
+            //This is where we make get request to get brand and product cells
+            
+        }
     }
+    
+    
     func toggleMenu() {
         menuOpened.toggle()
     }
@@ -80,41 +103,56 @@ struct SearchBar: View {
                     .padding(.vertical, 2.0)
             }
             .zIndex(1)
-            RoundedRectangle(cornerRadius: /*@START_MENU_TOKEN@*/25.0/*@END_MENU_TOKEN@*/)
+            RoundedRectangle(cornerRadius: 25.0)
                 .frame(height: 30.0)
                 .foregroundColor(Color(red: 18/255, green: 18/255, blue: 18/255))
                 .shadow(color: Color(red: 18/255, green: 18/255, blue: 18/255), radius: 2, x: -1, y: 2)
         }
-        .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+        .padding(.all)
     }
 }
 
 
 //MARK: PopularBrandsView
 struct PopularBrands: View {
+    
+    @StateObject var brandFetcher = BrandFetcher()
     var body: some View {
         VStack(alignment: .leading){
             Text("Popular Brands")
                 .font(.title)
                 .fontWeight(.semibold)
             ScrollView(.horizontal){
-                HStack{
-                    ForEach(1..<10, id: \.self){ i in
-                        BrandCell()
-                            .padding(.trailing, 3.0)
+                if brandFetcher.isLoading{
+                    ProgressView()
+                }
+                else if brandFetcher.errorMessage != nil {
+                    Text(brandFetcher.errorMessage ?? "")
+                }
+                else {
+                    HStack{
+                        ForEach(brandFetcher.Brands, id: \.brandName){ brand in
+                            NavigationLink(destination: BrandShopView(brand: brand)) {
+                                BrandCell(brand: brand)
+                                    .padding(.trailing, 3.0)
+                            }.navigationBarHidden(true)
+                                .navigationBarTitleDisplayMode(.inline)
+                        }
                     }
                 }
             }
         }
-        .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+        .padding(.all)
     
     }
 }
 
 
 //MARK: Preview
-struct HomeVIew_Previews: PreviewProvider {
+struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        NavigationView {
+            HomeView()
+        }
     }
 }

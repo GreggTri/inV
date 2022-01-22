@@ -8,23 +8,33 @@
 import SwiftUI
 
 struct BrandShopView: View {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    let brand: SellerModel
+    @StateObject var productFetcher = ProductFetcher()
+    
     var body: some View {
         ScrollView{
             HStack {
                 Image(systemName: "arrow.backward")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 25, height: 25)
+                    .frame(width: 24, height: 24)
+                    .onTapGesture {
+                        presentationMode.wrappedValue.dismiss()
+                    }
                 Spacer()
-                Text("Trimarchi")
-                    .font(.largeTitle)
+                Text(brand.brandName)
+                    .font(.title)
                     .fontWeight(.medium)
                 Spacer()
-                Image(systemName: "info.circle.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 25, height: 25)
-                    .foregroundColor(inVGreen)
+                NavigationLink(destination: BrandInfoView(brand: brand)){
+                    Image(systemName: "info.circle.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 24, height: 24)
+                        .foregroundColor(inVGreen)
+                }
+                
             }
             .padding(.horizontal)
             VStack(alignment: .center) {
@@ -41,27 +51,34 @@ struct BrandShopView: View {
                     Text("All Products")
                         .font(.title3)
                         .fontWeight(.semibold)
-                    Text("(6)")
+                    Text("(\(brand.numOfProducts)")
                         .font(.callout)
                         .foregroundColor(inVGreen)
                     Spacer()
                 }
                 .padding([.top, .leading, .bottom])
                 LazyVGrid(columns: [GridItem(.flexible())]){
-                    ForEach(1...15, id: \.self){i in
-                        ProductCell()
-                            .padding(/*@START_MENU_TOKEN@*/.all, 2.0/*@END_MENU_TOKEN@*/)
+                    ForEach(productFetcher.Products, id: \._id){product in
+                        ProductCell(product: product)
+                            .padding(.all, 2.0)
                     }
                 }
             }
         }.preferredColorScheme(.dark)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarHidden(true)
+            .onAppear {
+                
+                print(brand.brandName)
+                productFetcher.fetchAllSellerProducts(sellerId: brand.brandName)
+            }
     }
 }
 
 
 //MARK: Preview
-struct BrandShopView_Preview: PreviewProvider {
-    static var previews: some View {
-        BrandShopView()
-    }
-}
+//struct BrandShopView_Preview: PreviewProvider {
+//    static var previews: some View {
+//        BrandShopView(brand: SellerModel)
+//    }
+//}

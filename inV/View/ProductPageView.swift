@@ -9,47 +9,59 @@ import SwiftUI
 import SceneKit
 
 struct ProductPageView: View {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    let product: ProductModel
+    
     var body: some View {
         ScrollView(.vertical){
             VStack(){
                 HStack(alignment: .top){
                     Image(systemName: "arrow.backward")
-                        .foregroundColor(.green)
-                        .padding([.top, .leading], 6.0)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 24, height: 24)
+                        .foregroundColor(inVGreen)
+                        .onTapGesture {
+                            presentationMode.wrappedValue.dismiss()
+                        }
                     Spacer()
-                    Text("Prada Linea Series")
+                    Text("\(product.productName)")
                         .font(.title2)
                         .multilineTextAlignment(.center)
                     Spacer()
                     Image(systemName: "heart")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 24, height: 24)
                         .foregroundColor(.white)
-                        .padding([.top, .trailing], 6.0)
                 }
-                .padding(/*@START_MENU_TOKEN@*/.all, 8.0/*@END_MENU_TOKEN@*/)
+                .padding(.all, 8.0)
                 HStack{
-                    Text("Prada Linea Series")
+                    Text("\(product.productName)")
                         .font(.title3)
                         .fontWeight(.semibold)
                     Spacer()
-                    Text("$75.00")
+                    Text("\(product.price)")
                         .font(.title3)
                         .fontWeight(.semibold)
                         .foregroundColor(inVGreen)
                 }
-                .padding(/*@START_MENU_TOKEN@*/[.top, .leading, .trailing]/*@END_MENU_TOKEN@*/)
+                .padding([.top, .leading, .trailing])
                 HStack{
                     Text("Sold By:")
                         .fontWeight(.semibold)
-                    Text("Prada")
-                        .underline()
-                        .foregroundColor(.blue)
+                    NavigationLink(destination: BrandShopView(brand: product.seller)){
+                        Text("\(product.seller.brandName)")
+                            .underline()
+                            .foregroundColor(.blue)
+                    }
                     Spacer()
                     Text("Free Shipping")
                         .font(.subheadline)
                         .fontWeight(.light)
                 }
                 .padding(/*@START_MENU_TOKEN@*/.horizontal/*@END_MENU_TOKEN@*/)
-                ProductSceneView()
+                ProductSceneView(product: product)
                 VStack(alignment: .leading) {
                     HStack(){
                         Text("Colors: ")
@@ -75,12 +87,14 @@ struct ProductPageView: View {
                     Spacer()
                     AddtoCartBtn()
                     Spacer()
-                    ViewInARBtn()
+                    NavigationLink(destination: ARProductView(product: product)) {
+                        ViewInARBtn()
+                    }
                     Spacer()
                 }
                 .padding(/*@START_MENU_TOKEN@*/.vertical/*@END_MENU_TOKEN@*/)
                 VStack(alignment: .leading) {
-                    Text("Concerns greatest margaret him absolute entrance nay. Door neat week do find past he. Be no surprise he honoured indulged. Unpacked endeavor six steepest had husbands her. Painted no or affixed it so civilly. Exposed neither pressed so cottage as proceed at offices. Nay they gone sir game four.")
+                    Text("\(product.desc)")
                         .font(.body)
                         .fontWeight(.light)
                         .padding(.horizontal)
@@ -120,12 +134,17 @@ struct ProductPageView: View {
                     
             }
         }.preferredColorScheme(.dark)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarHidden(true)
     }
 }
 
 
 //MARK: ProductSceneView
 struct ProductSceneView: View{
+    
+    let product: ProductModel
+    
     var body: some View{
         
         SceneView(
@@ -186,8 +205,8 @@ struct AddtoCartBtn: View{
 
 
 //MARK: Preview
-struct ProductPageView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProductPageView()
-    }
-}
+//struct ProductPageView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ProductPageView()
+//    }
+//}

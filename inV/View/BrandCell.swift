@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct BrandCell: View {
+    let brand: SellerModel
+    
     var body: some View {
         VStack(alignment: .center) {
             Image("Trimarchi")
@@ -15,17 +17,11 @@ struct BrandCell: View {
                 .scaledToFit()
                 .frame(width: 80, height: 80)
                 .cornerRadius(10)
-            Text("Trimarchi")
+            Text(brand.brandName)
                 .font(.subheadline)
                 .fontWeight(.semibold)
                 .foregroundColor(.white)
                 
         }
-    }
-}
-
-struct BrandCell_Previews: PreviewProvider {
-    static var previews: some View {
-        BrandCell().preferredColorScheme(.dark)
     }
 }

@@ -7,19 +7,21 @@
 
 import Foundation
 
-struct ProductModel: Decodable, Identifiable {
-    let id: Int
+struct ProductModel: Codable{
+    let _id: String
     let ProductImage: String
     let productName: String
     let desc: String
     let category: String
     let price: String
     let countInStock: Int
-    let colorway: colorway
+    let colorway: [Colorway]
+    let seller: SellerModel
 }
 
-struct colorway: Decodable {
+struct Colorway: Codable {
     let colorName: String
     let hexcode: String
-    let mode: String
+    let model: String
 }
+

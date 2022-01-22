@@ -11,6 +11,7 @@ import UIKit
 
 class ARDelegate: NSObject, ARSCNViewDelegate, ObservableObject {
     @Published var message:String = "starting AR"
+    //var product: ProductModel
     
     var contentNode: SCNNode?
     
@@ -53,6 +54,7 @@ class ARDelegate: NSObject, ARSCNViewDelegate, ObservableObject {
         let occlusionNode = SCNNode(geometry: faceGeometry)
         occlusionNode.renderingOrder = -1
         
+        //TODO: Figure out how to get product.colorway.model to be in this spot here. and to reset every time a new colorway is chosen
         let sunglasses = SCNReferenceNode(named: "overlayModel")
         
         contentNode = SCNNode()

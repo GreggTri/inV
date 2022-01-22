@@ -60,10 +60,13 @@ struct AuthView: View {
 //MARK: CreateAccountView
 struct createAccountView: View {
     
+    
     @State var firstName: String = ""
     @State var lastName: String = ""
     @State var email: String = ""
     @State var password: String = ""
+    
+    @ObservedObject var auth = AuthViewModel()
     
     var body: some View{
         VStack(alignment: .center){
@@ -79,6 +82,8 @@ struct createAccountView: View {
                 print("last Name is: " + lastName)
                 print("email is: " + email)
                 print("password is: " + password)
+                
+                self.auth.createAccount(firstName: self.firstName, lastName: self.lastName, email: self.email, password: self.password)
             }
                 .frame(width: 250.0, height: 50.0)
                 .font(.title3)
@@ -110,21 +115,37 @@ struct SignInView: View {
     @State var email: String = ""
     @State var password: String = ""
     
+    @ObservedObject var auth = AuthViewModel()
+    
     var body: some View{
         VStack(alignment: .center){
             authTextField(ImageString: Image("emailIcon"), placeholder: "Email", bindTo: $email)
-            secureAuthTextField(ImageString: Image(systemName: "lock.fill"), placeholder: "Create a password", bindTo: $password)
+            secureAuthTextField(ImageString: Image(systemName: "lock.fill"), placeholder: "Password", bindTo: $password)
                 .padding(.bottom)
-            Button("Sign In"){
-                print("User wants to Sign In")
-            }
+            
+            Text("Sign In")
                 .frame(width: 250.0, height: 50.0)
                 .font(.title3)
                 .foregroundColor(.black)
                 .background(inVGreen)
                 .cornerRadius(25)
                 .shadow(color: inVGreen, radius: 3, x: 0.0, y: 0.0)
-            .padding(.vertical, 20.0)
+                .padding(.vertical, 20.0)
+                .onTapGesture {
+                    print("User wants to Sign In")
+                    
+                    self.auth.SignIn(email: self.email, password: self.password)
+                    
+                    print(auth.isAuthenticated)
+                    
+                    if auth.isAuthenticated {
+                        print("Hi")
+                        //NavigationLink("Hi", destination: HomeView())
+                    } else {
+                        //do nothing
+                    }
+                }
+            
             Text("Forgot your password?")
                 .underline()
                 .foregroundColor(.white)

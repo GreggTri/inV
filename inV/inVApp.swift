@@ -10,9 +10,16 @@ import SwiftUI
 
 @main
 struct inVApp: App {
+    
+    
+    
     var body: some Scene {
         WindowGroup {
-            ARProductView()
+            NavigationView {
+                HomeView()
+                    .navigationBarHidden(true)
+                    .navigationBarTitleDisplayMode(.inline)
+            }
         }
     }
 }
