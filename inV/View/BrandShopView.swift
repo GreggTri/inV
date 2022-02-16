@@ -51,14 +51,21 @@ struct BrandShopView: View {
                     Text("All Products")
                         .font(.title3)
                         .fontWeight(.semibold)
-                    Text("(\(brand.numOfProducts)")
-                        .font(.callout)
-                        .foregroundColor(inVGreen)
+                    if brand.numOfProducts != nil{
+                        Text("(\(brand.numOfProducts!))")
+                            .font(.callout)
+                            .foregroundColor(inVGreen)
+                    }
+                    else{
+                        Text("(\(productFetcher.Products.count)")
+                            .font(.callout)
+                            .foregroundColor(inVGreen)
+                    }
                     Spacer()
                 }
                 .padding([.top, .leading, .bottom])
                 LazyVGrid(columns: [GridItem(.flexible())]){
-                    ForEach(productFetcher.Products, id: \._id){product in
+                    ForEach(productFetcher.Products, id: \.id){product in
                         ProductCell(product: product)
                             .padding(.all, 2.0)
                     }
@@ -69,8 +76,8 @@ struct BrandShopView: View {
             .navigationBarHidden(true)
             .onAppear {
                 
-                print(brand.brandName)
-                productFetcher.fetchAllSellerProducts(sellerId: brand.brandName)
+                print(brand.id)
+                productFetcher.fetchAllSellerProducts(sellerId: brand.id)
             }
     }
 }

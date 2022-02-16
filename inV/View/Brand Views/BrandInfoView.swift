@@ -32,25 +32,25 @@ struct BrandInfoView: View {
             .padding(.all)
             HStack{
                 Image(systemName: "phone.circle.fill")
-                Text("\(brand.customerService.cs_phone)")
+                Text("\(brand.customerService.csPhone)")
                     .foregroundColor(inVGreen)
                 Spacer()
             }
             .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             HStack{
                 Image("emailIcon")
-                Text("\(brand.customerService.cs_email)").underline()
+                Text("\(brand.customerService.csEmail)").underline()
                     
                 Spacer()
             }
             .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             .foregroundColor(inVGreen)
             BoxedPolicy(title: "Return Policy",
-                        content: "\(brand.customerService.return_policy)"
+                        content: "\(brand.customerService.returnPolicy)"
             )
             Spacer()
             BoxedPolicy(title: "Warranty Policy",
-                        content: "\(brand.customerService.warranty_policy)"
+                        content: "\(brand.customerService.warrantyPolicy)"
             )
             
             Spacer()

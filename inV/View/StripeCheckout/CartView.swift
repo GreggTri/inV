@@ -9,9 +9,12 @@ import SwiftUI
 import Stripe
 
 struct CartView: View {
-    @ObservedObject var model = MyBackendModel()
+    
+    @ObservedObject var auth = AuthViewModel()
+    
     @State var isFetchingPaymentIntent: Bool = false
     @State var isCartEmpty: Bool = false
+    @State var productIsTapped: Bool = false
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
@@ -34,23 +37,62 @@ struct CartView: View {
                         Text("")
                             .padding(.trailing, 50.0)
                     }
-                    if(isCartEmpty){
-                        Spacer()
-                        Image(systemName: "cart.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 150.0, height: 150.0)
-                            .foregroundColor(inVGreen)
-                            .shadow(color: inVGreen, radius: 2, x: -1.0, y: 2.0)
-                        Text("There is nothing in your cart right now.")
-                            .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-                        
-                    }else{
+                if !auth.isAuthenticated {
+                    Spacer()
+                    Text("Please create an account or sign in")
+                    NavigationLink(destination: MainView()){
+                        Button("Create Account/Sign in"){
+                            
+                        }
+                            .frame(width: 250.0, height: 50.0)
+                            .font(.title3)
+                            .foregroundColor(.black)
+                            .background(inVGreen)
+                            .cornerRadius(25)
+                            .shadow(color: inVGreen, radius: 3, x: 0.0, y: 0.0)
+                            .padding(.all)
+                    }
+                }else if auth.user.cart.isEmpty{
+                    Spacer()
+                    Image(systemName: "cart.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 150.0, height: 150.0)
+                        .foregroundColor(inVGreen)
+                        .shadow(color: inVGreen, radius: 2, x: -1.0, y: 2.0)
+                    Text("There is nothing in your cart right now.")
+                        .padding(.all)
+                }else if auth.isLoading{
+                    
+                    ProgressView()
+                    
+                }else if auth.errorMessage != nil{
+                    
+                    Text("Oops! Something went wrong!")
+                    Text("Please Try Again").underline()
+                        .onTapGesture {
+                                auth.getCart()
+                        }
+                }else {
                         ScrollView{
                             LazyVGrid(columns: [GridItem(.flexible())]){
-                                ForEach(1...2, id: \.self){ i in
-                                    ProductInCart()
+                                ForEach(auth.Products, id: \.id){ product in
+                                    ProductInCart(auth: auth, product: product)
                                         .padding(.vertical, 3.0)
+                                        .onTapGesture{
+                                            productIsTapped.toggle()
+                                            
+                                        }
+                                    
+                                    if productIsTapped{
+                                        
+                                        Button("Remove from cart"){
+                                            auth.removeCart(productId: product.id)
+                                            productIsTapped.toggle()
+                                        }
+                                            .foregroundColor(.red)
+                                            .frame(width: 360.0, height: 50)
+                                    } else { /* do nothing */ }
                                 }
                             }
                         }
@@ -64,7 +106,7 @@ struct CartView: View {
                         }
                         .padding(.all)
                         
-                        NavigationLink(destination: FinalizeOrderView()){
+                    NavigationLink(destination: FinalizeOrderView(auth: auth)){
                             
                             Text("Finalize Order")
                         }
@@ -81,12 +123,22 @@ struct CartView: View {
             }.preferredColorScheme(.dark)
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarHidden(true)
+            .onAppear{
+                if !auth.user.cart.isEmpty && auth.isAuthenticated{
+                    auth.getCart()
+                }
+                
+            }
     }
 }
 
 
 
 struct ProductInCart: View {
+    
+    let auth: AuthViewModel
+    let product: ProductModel
+    
     var body: some View {
         ZStack{
             HStack{
@@ -96,12 +148,12 @@ struct ProductInCart: View {
                     .frame(width: 90, height: 90)
                     .padding([.top, .leading, .bottom], 8.0)
                 VStack(alignment: .leading){
-                    Text("Prada Linea Series")
+                    Text(product.productName)
                         .font(.headline)
                         .fontWeight(.bold)
                         .foregroundColor(Color.white)
                         .padding(.vertical)
-                    Text("$75")
+                    Text("\(product.price)")
                         .foregroundColor(inVGreen)
                         
                 }
@@ -109,11 +161,17 @@ struct ProductInCart: View {
                 VStack(){
                     HStack(){
                         Image(systemName: "minus.circle").foregroundColor(.red)
-                        Text("1").foregroundColor(.white)
+                            .onTapGesture {
+                                auth.minusQuantityToItem(productId: product.id)
+                            }
+                        Text("\(auth.getQuantity(productId: product.id))").foregroundColor(.white)
                         Image(systemName: "plus.circle.fill").foregroundColor(inVGreen)
+                            .onTapGesture {
+                                auth.addQuantityToItem(productId: product.id)
+                            }
                     }
-                    .padding(/*@START_MENU_TOKEN@*/.all, 2.0/*@END_MENU_TOKEN@*/)
-                    Text("Olive Green")
+                    .padding(.all, 2.0)
+                    Text("\(auth.getColowayName(productId: product.id))")
                         .font(.subheadline)
                         .fontWeight(.light)
                         .foregroundColor(.white)

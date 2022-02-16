@@ -10,6 +10,7 @@ import SwiftUI
 
 struct FinalizeOrderView: View {
     @ObservedObject var model = MyBackendModel()
+    let auth: AuthViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {
@@ -60,7 +61,7 @@ struct FinalizeOrderView: View {
                 LoadingView()
             }
             if let result = model.paymentResult {
-                PaymentStatusView(result: result)
+                PaymentStatusView(result: result, auth: auth)
             }
         }.onAppear { model.preparePaymentSheet() }
         .preferredColorScheme(.dark)
@@ -98,7 +99,8 @@ struct LoadingView: View {
 
 struct PaymentStatusView: View {
     let result: PaymentSheetResult
-
+    let auth: AuthViewModel
+    
     var body: some View {
         HStack {
             switch result {
@@ -184,8 +186,8 @@ struct FinalizedOrder: View {
     }
 }
 
-struct ExampleSwiftUIPaymentSheet_Preview: PreviewProvider {
-    static var previews: some View {
-        FinalizeOrderView()
-    }
-}
+//struct ExampleSwiftUIPaymentSheet_Preview: PreviewProvider {
+//    static var previews: some View {
+//        FinalizeOrderView()
+//    }
+//}

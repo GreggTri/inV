@@ -8,25 +8,27 @@
 import SwiftUI
 
 struct ReviewCell: View {
+    let review: ReviewModel
+    
     var body: some View {
         ZStack{
             VStack{
                 HStack{
                     VStack(alignment: .leading){
-                        Text("Gregg Trimarchi")
+                        Text("\(review.userFirstName) \(review.userLastName)")
                             .padding(.bottom, 1.0)
                         HStack{
                             Image(systemName: "star.fill").foregroundColor(.yellow)
-                            Text("5.0")
+                            Text("\(review.rating)")
                         }
                     }
                     .padding(.leading)
                     Spacer()
-                    Text("12/12/21")
+                    Text("\(review.dateCreated)")
                         .padding(.trailing)
                 }
                 .padding([.top, .bottom, .trailing], 6.0)
-                Text("This is a Review of a product that I have in person it is a very good product that I think everyone should have so definitely buy it")
+                Text("\(review.content)")
                     .padding(.bottom)
             }
         }.preferredColorScheme(.dark)
@@ -38,8 +40,8 @@ struct ReviewCell: View {
     }
 }
 
-struct ReviewCell_Previews: PreviewProvider {
-    static var previews: some View {
-        ReviewCell()
-    }
-}
+//struct ReviewCell_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ReviewCell()
+//    }
+//}

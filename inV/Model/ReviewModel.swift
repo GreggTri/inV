@@ -8,10 +8,11 @@
 import Foundation
 
 struct ReviewModel: Codable{
-    let _id: String
+    let id: String
     let productId: String
-    let userId: String
+    let userFirstName: String
+    let userLastName: String
     let dateCreated: String
     let content: String
-    let rating: Int
+    let rating: Double
 }

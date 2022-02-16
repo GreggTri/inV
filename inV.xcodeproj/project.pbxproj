@@ -12,10 +12,20 @@
 		5C7834802768D4FD0093A6ED /* overlayModel.scn in Resources */ = {isa = PBXBuildFile; fileRef = 5C78347F2768D4FD0093A6ED /* overlayModel.scn */; };
 		5C7834822769E1A80093A6ED /* FinalizeOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7834812769E1A80093A6ED /* FinalizeOrderView.swift */; };
 		5C7834882769F9E20093A6ED /* StripePaymentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7834872769F9E20093A6ED /* StripePaymentViewModel.swift */; };
+		5C7993E727A8822E006E7599 /* OrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7993E627A8822E006E7599 /* OrderModel.swift */; };
+		5C7993E927A98B97006E7599 /* OrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7993E827A98B97006E7599 /* OrderCell.swift */; };
+		5C7993EC27A9E86A006E7599 /* DetailedOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7993EB27A9E86A006E7599 /* DetailedOrderView.swift */; };
+		5C7993EE27AB6B8B006E7599 /* SearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7993ED27AB6B8B006E7599 /* SearchModel.swift */; };
+		5C7993F027AB6C4C006E7599 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7993EF27AB6C4C006E7599 /* SearchViewModel.swift */; };
+		5C7993F227B3B909006E7599 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7993F127B3B909006E7599 /* SearchView.swift */; };
+		5C8F5EED27A0EA9800C78969 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8F5EEC27A0EA9800C78969 /* APIService.swift */; };
+		5C8F5EF127A32EFF00C78969 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8F5EF027A32EFE00C78969 /* AccountView.swift */; };
+		5C8F5EF327A32F4E00C78969 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8F5EF227A32F4E00C78969 /* FavoritesView.swift */; };
+		5C8F5EF527A32F6500C78969 /* ShippingInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8F5EF427A32F6500C78969 /* ShippingInfoView.swift */; };
+		5C8F5EF727A32F8D00C78969 /* OrdersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8F5EF627A32F8D00C78969 /* OrdersView.swift */; };
+		5C8F5EF927A3338E00C78969 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8F5EF827A3338E00C78969 /* MainView.swift */; };
 		5CC23D0427809272001AA185 /* SellerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC23D0327809272001AA185 /* SellerModel.swift */; };
 		5CC23D0627809808001AA185 /* ReviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC23D0527809808001AA185 /* ReviewModel.swift */; };
-		5CC23D082780A03E001AA185 /* AuthModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC23D072780A03E001AA185 /* AuthModel.swift */; };
-		5CC23D0A27984271001AA185 /* NewAccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC23D0927984271001AA185 /* NewAccountModel.swift */; };
 		5CC23D0C2799C39F001AA185 /* BrandFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC23D0B2799C39E001AA185 /* BrandFetcher.swift */; };
 		5CC23D0E2799C9FD001AA185 /* ProductFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC23D0D2799C9FD001AA185 /* ProductFetcher.swift */; };
 		5CC23D152799DB80001AA185 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC23D142799DB80001AA185 /* APIError.swift */; };
@@ -51,10 +61,20 @@
 		5C7834812769E1A80093A6ED /* FinalizeOrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalizeOrderView.swift; sourceTree = "<group>"; };
 		5C7834862769F17E0093A6ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		5C7834872769F9E20093A6ED /* StripePaymentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StripePaymentViewModel.swift; sourceTree = "<group>"; };
+		5C7993E627A8822E006E7599 /* OrderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderModel.swift; sourceTree = "<group>"; };
+		5C7993E827A98B97006E7599 /* OrderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderCell.swift; sourceTree = "<group>"; };
+		5C7993EB27A9E86A006E7599 /* DetailedOrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedOrderView.swift; sourceTree = "<group>"; };
+		5C7993ED27AB6B8B006E7599 /* SearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchModel.swift; sourceTree = "<group>"; };
+		5C7993EF27AB6C4C006E7599 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		5C7993F127B3B909006E7599 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		5C8F5EEC27A0EA9800C78969 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		5C8F5EF027A32EFE00C78969 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		5C8F5EF227A32F4E00C78969 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
+		5C8F5EF427A32F6500C78969 /* ShippingInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingInfoView.swift; sourceTree = "<group>"; };
+		5C8F5EF627A32F8D00C78969 /* OrdersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersView.swift; sourceTree = "<group>"; };
+		5C8F5EF827A3338E00C78969 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		5CC23D0327809272001AA185 /* SellerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellerModel.swift; sourceTree = "<group>"; };
 		5CC23D0527809808001AA185 /* ReviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewModel.swift; sourceTree = "<group>"; };
-		5CC23D072780A03E001AA185 /* AuthModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthModel.swift; sourceTree = "<group>"; };
-		5CC23D0927984271001AA185 /* NewAccountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountModel.swift; sourceTree = "<group>"; };
 		5CC23D0B2799C39E001AA185 /* BrandFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandFetcher.swift; sourceTree = "<group>"; };
 		5CC23D0D2799C9FD001AA185 /* ProductFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFetcher.swift; sourceTree = "<group>"; };
 		5CC23D142799DB80001AA185 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
@@ -115,10 +135,61 @@
 			path = StripeCheckout;
 			sourceTree = "<group>";
 		};
+		5C7993DF27A39B37006E7599 /* Legal Views */ = {
+			isa = PBXGroup;
+			children = (
+				5CE43B942768AFCD0081C634 /* TOSView.swift */,
+				5CE43B8A2768AF8E0081C634 /* PPView.swift */,
+			);
+			path = "Legal Views";
+			sourceTree = "<group>";
+		};
+		5C7993E027A39B71006E7599 /* Brand Views */ = {
+			isa = PBXGroup;
+			children = (
+				5CE43B822768AF4A0081C634 /* BrandShopView.swift */,
+				5CE43B802768AF3C0081C634 /* BrandInfoView.swift */,
+				5CE43B7D2768AF0B0081C634 /* BrandCell.swift */,
+			);
+			path = "Brand Views";
+			sourceTree = "<group>";
+		};
+		5C7993E127A39BA4006E7599 /* Product Views */ = {
+			isa = PBXGroup;
+			children = (
+				5CE43B902768AFB70081C634 /* ReviewCell.swift */,
+				5CE43B8E2768AFA30081C634 /* ProductPageView.swift */,
+				5CE43B8C2768AF990081C634 /* ProductCell.swift */,
+				5CE43B7F2768AF120081C634 /* ARProductView */,
+			);
+			path = "Product Views";
+			sourceTree = "<group>";
+		};
+		5C7993EA27A9E849006E7599 /* Order Views */ = {
+			isa = PBXGroup;
+			children = (
+				5C7993E827A98B97006E7599 /* OrderCell.swift */,
+				5C8F5EF627A32F8D00C78969 /* OrdersView.swift */,
+				5C7993EB27A9E86A006E7599 /* DetailedOrderView.swift */,
+			);
+			path = "Order Views";
+			sourceTree = "<group>";
+		};
+		5C7993F327B3B911006E7599 /* MainViews */ = {
+			isa = PBXGroup;
+			children = (
+				5C8F5EF827A3338E00C78969 /* MainView.swift */,
+				5C7993F127B3B909006E7599 /* SearchView.swift */,
+				5CE43B882768AF830081C634 /* HomeView.swift */,
+			);
+			path = MainViews;
+			sourceTree = "<group>";
+		};
 		5CC23D132799DB5C001AA185 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
 				5CC23D142799DB80001AA185 /* APIError.swift */,
+				5C8F5EEC27A0EA9800C78969 /* APIService.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -169,20 +240,18 @@
 		5CE43B7C2768AE730081C634 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				5C7993F327B3B911006E7599 /* MainViews */,
+				5C7993EA27A9E849006E7599 /* Order Views */,
+				5C7993E127A39BA4006E7599 /* Product Views */,
+				5C7993E027A39B71006E7599 /* Brand Views */,
+				5C7993DF27A39B37006E7599 /* Legal Views */,
 				5C7834832769E5870093A6ED /* StripeCheckout */,
-				5CE43B7F2768AF120081C634 /* ARProductView */,
 				5CE43B7A2768AE6C0081C634 /* AuthView.swift */,
-				5CE43B7D2768AF0B0081C634 /* BrandCell.swift */,
-				5CE43B802768AF3C0081C634 /* BrandInfoView.swift */,
-				5CE43B822768AF4A0081C634 /* BrandShopView.swift */,
 				5CE43B862768AF710081C634 /* ForgotPasswordView.swift */,
-				5CE43B882768AF830081C634 /* HomeView.swift */,
-				5CE43B8A2768AF8E0081C634 /* PPView.swift */,
-				5CE43B8C2768AF990081C634 /* ProductCell.swift */,
-				5CE43B8E2768AFA30081C634 /* ProductPageView.swift */,
-				5CE43B902768AFB70081C634 /* ReviewCell.swift */,
+				5C8F5EF027A32EFE00C78969 /* AccountView.swift */,
 				5CE43B922768AFC20081C634 /* SideMenu.swift */,
-				5CE43B942768AFCD0081C634 /* TOSView.swift */,
+				5C8F5EF227A32F4E00C78969 /* FavoritesView.swift */,
+				5C8F5EF427A32F6500C78969 /* ShippingInfoView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -203,10 +272,10 @@
 				5CE43BA02768B1E10081C634 /* ProductModel.swift */,
 				5CE43BA22768B2030081C634 /* SideMenuItemsModel.swift */,
 				5CE43BA42768B21C0081C634 /* UserModel.swift */,
-				5CC23D072780A03E001AA185 /* AuthModel.swift */,
 				5CC23D0327809272001AA185 /* SellerModel.swift */,
 				5CC23D0527809808001AA185 /* ReviewModel.swift */,
-				5CC23D0927984271001AA185 /* NewAccountModel.swift */,
+				5C7993E627A8822E006E7599 /* OrderModel.swift */,
+				5C7993ED27AB6B8B006E7599 /* SearchModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -218,6 +287,7 @@
 				5C211C64276A2D46003D7180 /* AuthViewModel.swift */,
 				5CC23D0B2799C39E001AA185 /* BrandFetcher.swift */,
 				5CC23D0D2799C9FD001AA185 /* ProductFetcher.swift */,
+				5C7993EF27AB6C4C006E7599 /* SearchViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -277,6 +347,8 @@
 				Base,
 			);
 			mainGroup = 5CE43B602768AE510081C634;
+			packageReferences = (
+			);
 			productRefGroup = 5CE43B6A2768AE510081C634 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -350,12 +422,12 @@
 				5CE43B892768AF830081C634 /* HomeView.swift in Sources */,
 				5CE43BA32768B2030081C634 /* SideMenuItemsModel.swift in Sources */,
 				5CE43B992768B0020081C634 /* ARDelegate.swift in Sources */,
-				5CC23D082780A03E001AA185 /* AuthModel.swift in Sources */,
 				5CE43B8D2768AF990081C634 /* ProductCell.swift in Sources */,
 				5CE43B812768AF3C0081C634 /* BrandInfoView.swift in Sources */,
 				5CC23D0627809808001AA185 /* ReviewModel.swift in Sources */,
 				5CE43B932768AFC20081C634 /* SideMenu.swift in Sources */,
 				5CE43B852768AF5C0081C634 /* CartView.swift in Sources */,
+				5C8F5EF927A3338E00C78969 /* MainView.swift in Sources */,
 				5CC23D0C2799C39F001AA185 /* BrandFetcher.swift in Sources */,
 				5CE43B952768AFCD0081C634 /* TOSView.swift in Sources */,
 				5CE43B872768AF710081C634 /* ForgotPasswordView.swift in Sources */,
@@ -364,18 +436,28 @@
 				5CE43B6D2768AE510081C634 /* inVApp.swift in Sources */,
 				5CC23D0E2799C9FD001AA185 /* ProductFetcher.swift in Sources */,
 				5CC23D0427809272001AA185 /* SellerModel.swift in Sources */,
+				5C7993EC27A9E86A006E7599 /* DetailedOrderView.swift in Sources */,
+				5C7993F027AB6C4C006E7599 /* SearchViewModel.swift in Sources */,
+				5C7993E727A8822E006E7599 /* OrderModel.swift in Sources */,
+				5C7993F227B3B909006E7599 /* SearchView.swift in Sources */,
 				5CE43B8F2768AFA30081C634 /* ProductPageView.swift in Sources */,
 				5CE43B912768AFB70081C634 /* ReviewCell.swift in Sources */,
+				5C8F5EF727A32F8D00C78969 /* OrdersView.swift in Sources */,
 				5CE43BA12768B1E10081C634 /* ProductModel.swift in Sources */,
+				5C7993E927A98B97006E7599 /* OrderCell.swift in Sources */,
 				5CE43B9B2768B00A0081C634 /* ARProductView.swift in Sources */,
 				5C7834882769F9E20093A6ED /* StripePaymentViewModel.swift in Sources */,
 				5C211C65276A2D46003D7180 /* AuthViewModel.swift in Sources */,
 				5CC23D152799DB80001AA185 /* APIError.swift in Sources */,
 				5CE43B832768AF4A0081C634 /* BrandShopView.swift in Sources */,
 				5C7834822769E1A80093A6ED /* FinalizeOrderView.swift in Sources */,
+				5C8F5EED27A0EA9800C78969 /* APIService.swift in Sources */,
 				5CE43B9D2768B0140081C634 /* ARViewRepresentable.swift in Sources */,
-				5CC23D0A27984271001AA185 /* NewAccountModel.swift in Sources */,
+				5C8F5EF327A32F4E00C78969 /* FavoritesView.swift in Sources */,
 				5CE43BA52768B21C0081C634 /* UserModel.swift in Sources */,
+				5C8F5EF527A32F6500C78969 /* ShippingInfoView.swift in Sources */,
+				5C7993EE27AB6B8B006E7599 /* SearchModel.swift in Sources */,
+				5C8F5EF127A32EFF00C78969 /* AccountView.swift in Sources */,
 				5CE43B7B2768AE6C0081C634 /* AuthView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -519,7 +601,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -553,7 +635,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

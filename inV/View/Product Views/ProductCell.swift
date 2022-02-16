@@ -9,6 +9,10 @@ import SwiftUI
 
 struct ProductCell: View {
     let product: ProductModel
+    
+    @ObservedObject var auth = AuthViewModel()
+    
+    
     var body: some View {
         NavigationLink(destination: ProductPageView(product: product)) {
             ZStack{
@@ -23,8 +27,8 @@ struct ProductCell: View {
                             .fontWeight(.bold)
                             .foregroundColor(Color.white)
                         HStack{
-                            Image(systemName: "star.fill").foregroundColor(/*@START_MENU_TOKEN@*/.yellow/*@END_MENU_TOKEN@*/)
-                            Text("5.0")
+                            Image(systemName: "star.fill").foregroundColor(.yellow)
+                            Text("\(product.avgRating)")
                                 .font(.subheadline)
                                 .foregroundColor(Color.white)
                         }
@@ -35,11 +39,24 @@ struct ProductCell: View {
                     }
                     .padding(.vertical, 1.0)
                     VStack{
-                        Image(systemName: "heart")
-                            .foregroundColor(/*@START_MENU_TOKEN@*/.white/*@END_MENU_TOKEN@*/)
-                            
+                        if auth.user.favorites.contains(where: {$0.productId == product.id}){
+                            Image(systemName: "heart.fill")
+                                .foregroundColor(inVGreen)
+                                .onTapGesture {
+                                    
+                                    auth.removeFavorites(productId: product.id)
+                                }
+                        } else {
+                            Image(systemName: "heart")
+                                .foregroundColor(.white)
+                                .onTapGesture {
+                                    auth.addFavorites(productId: product.id)
+                                }
+                        }
+                        
+                        
                         Spacer()
-                        Text("\(product.price)").foregroundColor(Color.white)
+                        Text("$\(product.price)").foregroundColor(inVGreen)
                     }
                     .padding([.trailing], 6.0)
                     .padding([.top, .bottom], 10.0)
@@ -109,8 +126,9 @@ extension View {
 
 //MARK: PREVIEW
 //struct ProductCell_Previews: PreviewProvider {
+//
 //    static var previews: some View {
-//        ProductCell()
+//        ProductCell(product: product)
 //    }
 //}
 

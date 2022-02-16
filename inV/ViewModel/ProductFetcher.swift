@@ -10,118 +10,139 @@ import Foundation
 class ProductFetcher: ObservableObject {
     
     @Published var Products = [ProductModel]()
+    @Published var Reviews = [ReviewModel]()
     @Published var isLoading: Bool = false
     @Published var errorMessage: String? = nil
     
     func fetch10Products(){
         
         isLoading = true
-        
-        let newestProductsUrl = URL(string: "http://10.182.75.5:5000/product/newest-products")!
+        errorMessage = nil
+        let newestProductsUrl = URL(string: "http://\(preURL):5000/product/newest-products")!
         
         var request = URLRequest(url: newestProductsUrl)
         request.httpMethod = "GET"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        URLSession.shared.dataTask(with: request) {[unowned self](data, res, error) in
+        let service = APIService()
+        service.fetch10Products(request: request){ [unowned self] result in
             
-            let res = res as? HTTPURLResponse
-            
-            if res?.statusCode == 200{
-                DispatchQueue.main.async{
-                    self.isLoading = false
-                }
-                 
-                let decoder = JSONDecoder()
-                if let data = data {
-                    do{
-                        let Products = try decoder.decode(ProductModel.self, from: data)
-
-                        DispatchQueue.main.async{
-                            self.Products = [Products]
-                        }
-                        
-                    } catch{
-                        print(error)
-                    }
+            DispatchQueue.main.async{
+                
+                self.isLoading = false
+                
+                switch result {
+                    
+                case .failure(let error):
+                    self.errorMessage = error.localizedDescription
+                    print(error)
+                    
+                case .success(let Products):
+                    self.Products = Products
                 }
             }
-            else if res?.statusCode == 400 {
-                DispatchQueue.main.async{
-                    errorMessage = APIError.url(URLError.init(.notConnectedToInternet)).localizedDescription
-                }
-                print(error!)
-            }
-            else if res?.statusCode == 500 {
-                DispatchQueue.main.async{
-                    errorMessage = APIError.unknown.localizedDescription
-                }
-                print(error!)
-            } else {
-                DispatchQueue.main.async{
-                    errorMessage = APIError.unknown.localizedDescription
-                }
-                print(error!)
-            }
-            
-            
-        }.resume()
+        }
     }
     
     func fetchAllSellerProducts(sellerId: String) {
         
         isLoading = true
-        print(sellerId)
-        let id = sellerId
-        print(id)
-        let allSellerProductsUrl = URL(string: "http://10.182.75.5:5000/product/list-all/\(id)")!
+        errorMessage = nil
+        let allSellerProductsUrl = URL(string: "http://\(preURL):5000/product/list-all/\(sellerId)")!
         
         var request = URLRequest(url: allSellerProductsUrl)
         request.httpMethod = "GET"
+        let service = APIService()
+        service.fetch10Products(request: request){ [unowned self] result in
+            
+            DispatchQueue.main.async{
+                
+                self.isLoading = false
+                
+                switch result {
+                    
+                case .failure(let error):
+                    self.errorMessage = error.localizedDescription
+                    print(error)
+                    
+                case .success(let Products):
+                    self.Products = Products
+                }
+            }
+        }
+    }
+    func fetchReviews(productId: String){
+        
+        isLoading = true
+        errorMessage = nil
+        
+        let productReviewsUrl = URL(string: "http://\(preURL):5000/product/get-reviews")!
+        let finalBody = try! JSONSerialization.data(withJSONObject: productId)
+        
+        var request = URLRequest(url: productReviewsUrl)
+        request.httpMethod = "GET"
+        request.httpBody = finalBody
+        
+        let service = APIService()
+        service.getReviews(request: request){ [unowned self] result in
+            
+            DispatchQueue.main.async{
+                
+                self.isLoading = false
+                
+                switch result {
+                    
+                case .failure(let error):
+                    self.errorMessage = error.localizedDescription
+                    print(error)
+                    
+                case .success(let reviews):
+                    self.Reviews = reviews
+                }
+            }
+        }
+    }
+    
+    func addReview(productId: String, userId: String, reviewContent: String, rating: String){
+        
+        let addReviewURL = URL(string: "http://\(preURL):5000/user/add-review")!
+
+        let body: [String: Any] = ["productId": productId, "userId": userId, "reviewContent": reviewContent, "rating": rating]
+        
+        let finalBody = try! JSONSerialization.data(withJSONObject: body)
+        
+        var request = URLRequest(url: addReviewURL)
+        request.httpMethod = "POST"
+        request.httpBody = finalBody
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        URLSession.shared.dataTask(with: request) {[unowned self](data, res, error) in
+        
+        let service = APIService()
+        service.addReview(request: request){[unowned self] result in
             
-            let res = res as? HTTPURLResponse
-            
-            if res?.statusCode == 200{
-                DispatchQueue.main.async{
-                    self.isLoading = false
-                }
-                 
-                let decoder = JSONDecoder()
-                if let data = data {
-                    do{
-                        let Products = try decoder.decode(ProductModel.self, from: data)
-                        
-                        print(Products)
-                        
-                        DispatchQueue.main.async{
-                            self.Products = [Products]
-                        }
-                        
-                    } catch{
-                        print(error)
-                    }
+            DispatchQueue.main.async {
+                
+                self.isLoading = false
+                
+                switch result {
+                case .failure(let error):
+                    self.errorMessage = error.localizedDescription
+                    print(error)
+                case .success(let response):
+                    print(response)
                 }
             }
-            else if res?.statusCode == 400 {
-                DispatchQueue.main.async{
-                    errorMessage = APIError.url(URLError.init(.notConnectedToInternet)).localizedDescription
-                }
-                print(error!)
-            }
-            else if res?.statusCode == 500 {
-                DispatchQueue.main.async{
-                    errorMessage = APIError.unknown.localizedDescription
-                }
-                print(error!)
-            } else {
-                DispatchQueue.main.async{
-                    errorMessage = APIError.unknown.localizedDescription
-                }
-                print(error!)
-            }
-            
-            
-        }.resume()
+        }
+    }
+    
+    //MARK: Preview Helpers
+    
+    static func errorState() -> ProductFetcher {
+        let fetcher = ProductFetcher()
+        fetcher.errorMessage = APIError.url(URLError.init(.notConnectedToInternet)).localizedDescription
+        return fetcher
+    }
+    
+    static func successState() -> ProductFetcher {
+        let fetcher = ProductFetcher()
+        fetcher.Products = [ProductModel.example1()]
+        return fetcher
     }
 }

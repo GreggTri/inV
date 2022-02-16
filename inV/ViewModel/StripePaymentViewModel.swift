@@ -10,13 +10,16 @@ import Stripe
 
 class MyBackendModel: ObservableObject {
     //DELETE NSAPPTRANSPORTSECURITY IN plist WHEN SWITCHING TO live
-    let backendCheckoutUrl = URL(string: "https://kiwi-candied-smoke.glitch.me/checkout")!  // An example backend endpoint
+    let checkoutUrl = URL(string: "https://kiwi-candied-smoke.glitch.me/checkout")!
+    
     @Published var paymentSheet: PaymentSheet?
     @Published var paymentResult: PaymentSheetResult?
+    @Published var user: UserModel!
+    var paymentId: String = ""
 
     func preparePaymentSheet() {
         // MARK: Fetch the PaymentIntent and Customer information from the backend
-        var request = URLRequest(url: backendCheckoutUrl)
+        var request = URLRequest(url: checkoutUrl)
         request.httpMethod = "POST"
         let task = URLSession.shared.dataTask(
             with: request,
@@ -39,23 +42,57 @@ class MyBackendModel: ObservableObject {
                 configuration.style = .alwaysDark
                 // Set allowsDelayedPaymentMethods to true if your business can handle payment methods that complete payment after a delay, like SEPA Debit and Sofort.
                 //configuration.allowsDelayedPaymentMethods = true
+                
                 DispatchQueue.main.async {
                     self.paymentSheet = PaymentSheet(
                         paymentIntentClientSecret: paymentIntentClientSecret,
                         configuration: configuration)
+                    
+                    self.paymentId = paymentIntentClientSecret
                 }
+                
             })
         task.resume()
     }
 
     func onCompletion(result: PaymentSheetResult) {
         self.paymentResult = result
-
-        // MARK: Demo cleanup
+        
         if case .completed = result {
-            // A PaymentIntent can't be reused after a successful payment. Prepare a new one for the demo.
+            
+            createOrder(paymentId: paymentId)
             self.paymentSheet = nil
-            //preparePaymentSheet()
+        }
+    }
+    
+    func createOrder(paymentId: String){
+        
+        let createOrderURL = URL(string: "http://\(preURL):5000/order/create-order")!
+        let body: [String: Any] = ["userId": user.id, "cart": user.cart, "address": user.shippingInfo!, "paymentId": paymentId, "trackingId": "", "status": ""]
+        
+        let finalBody = try! JSONSerialization.data(withJSONObject: body)
+        
+        
+        var request = URLRequest(url: createOrderURL)
+        request.httpMethod = "POST"
+        request.httpBody = finalBody
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let service = APIService()
+        service.createOrder(request: request){[unowned self] result in
+            
+            DispatchQueue.main.async {
+                
+                switch result {
+                case .failure(let error):
+                    
+                    print(error)
+                case .success(let response):
+                    self.user.cart.removeAll()
+                    objectWillChange.send()
+                    print(response)
+                }
+            }
         }
     }
 }

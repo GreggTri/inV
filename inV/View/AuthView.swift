@@ -3,6 +3,7 @@ import SwiftUI
 
 struct AuthView: View {
     @State var willSignIn: Bool = false
+    let auth: AuthViewModel
     
     var body: some View {
         ZStack(alignment: .top){
@@ -18,6 +19,7 @@ struct AuthView: View {
                             .font(.title)
                             .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
                             .onTapGesture {
+                                auth.errorMessage = nil
                                 willSignIn = false
                             }
                         //Spacer()
@@ -29,7 +31,7 @@ struct AuthView: View {
                     }
                     .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
                     
-                    SignInView()
+                    SignInView(auth: auth)
                     Spacer()
                 }else{
                     HStack(alignment: .center) {
@@ -44,12 +46,13 @@ struct AuthView: View {
                             .font(.title)
                             .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
                             .onTapGesture {
+                                auth.errorMessage = nil
                                 willSignIn = true
                             }
                     }
                     .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
                     
-                    createAccountView()
+                    createAccountView(auth: auth)
                     Spacer()
                 }
             }
@@ -59,31 +62,42 @@ struct AuthView: View {
 
 //MARK: CreateAccountView
 struct createAccountView: View {
-    
+    let auth: AuthViewModel
     
     @State var firstName: String = ""
     @State var lastName: String = ""
     @State var email: String = ""
     @State var password: String = ""
     
-    @ObservedObject var auth = AuthViewModel()
+    @State var displayError: Bool = false
+
+    //@ObservedObject var auth = AuthViewModel()
     
     var body: some View{
         VStack(alignment: .center){
             authTextField(ImageString: Image(systemName: "f.circle.fill"), placeholder: "First Name", bindTo: $firstName)
             authTextField(ImageString: Image(systemName: "l.circle.fill"), placeholder: "last Name", bindTo: $lastName)
-            authTextField(ImageString: Image("emailIcon"), placeholder: "Email", bindTo: $email)
+            authTextField(ImageString: Image("emailIcon"), placeholder: "Email", bindTo: $email).keyboardType(.emailAddress)
             secureAuthTextField(ImageString: Image(systemName: "lock.fill"), placeholder: "Create a password", bindTo: $password)
                 .padding(.bottom)
             
+            if displayError {
+                Text(auth.errorMessage ?? "").foregroundColor(.red)
+            }
+            
             Button("Create Account"){
-                print("User wants to create an account")
-                print("First Name is: " + firstName)
-                print("last Name is: " + lastName)
-                print("email is: " + email)
-                print("password is: " + password)
+                if firstName == "" || lastName == "" || email == "" || password == "" {
+                    auth.errorMessage = "Please fill out all the fields in order to create an account"
+                }else {
+                    auth.createAccount(firstName: self.firstName, lastName: self.lastName, email: self.email, password: self.password)
+                }
                 
-                self.auth.createAccount(firstName: self.firstName, lastName: self.lastName, email: self.email, password: self.password)
+                if auth.errorMessage != nil {
+                    displayError = true
+                } else {
+                    displayError = false
+                }
+
             }
                 .frame(width: 250.0, height: 50.0)
                 .font(.title3)
@@ -95,16 +109,26 @@ struct createAccountView: View {
             VStack {
                 Text("By registering you agree to our")
                 HStack {
-                    Text("Terms of Service").underline()
+                    NavigationLink(destination: TOSView()){
+                        Text("Terms of Service").underline()
+                    }
+                    .navigationBarHidden(true)
+                        .navigationBarTitleDisplayMode(.inline)
                     Text("&")
-                    Text("Privacy Policy").underline()
+                    NavigationLink(destination: PPView()){
+                        Text("Privacy Policy").underline()
+                    }
                 }
             }.foregroundColor(Color.white.opacity(0.8))
             Spacer()
-            Text("I don't want to create an account")
-                .underline()
-                .foregroundColor(/*@START_MENU_TOKEN@*/.gray/*@END_MENU_TOKEN@*/)
-                .padding(.vertical, 20.0)
+            NavigationLink(destination: HomeView(auth: auth)){
+                Text("I don't want to create an account")
+                    .underline()
+                    .foregroundColor(/*@START_MENU_TOKEN@*/.gray/*@END_MENU_TOKEN@*/)
+                    .padding(.vertical, 20.0)
+            }
+            .navigationBarHidden(true)
+            .navigationBarTitleDisplayMode(.inline)
             
         }
     }
@@ -115,13 +139,19 @@ struct SignInView: View {
     @State var email: String = ""
     @State var password: String = ""
     
-    @ObservedObject var auth = AuthViewModel()
+    let auth: AuthViewModel
     
+    @State var displayError: Bool = false
+
     var body: some View{
         VStack(alignment: .center){
-            authTextField(ImageString: Image("emailIcon"), placeholder: "Email", bindTo: $email)
+            authTextField(ImageString: Image("emailIcon"), placeholder: "Email", bindTo: $email).keyboardType(.emailAddress)
             secureAuthTextField(ImageString: Image(systemName: "lock.fill"), placeholder: "Password", bindTo: $password)
                 .padding(.bottom)
+            
+            if displayError {
+                Text(auth.errorMessage ?? "").foregroundColor(.red)
+            }
             
             Text("Sign In")
                 .frame(width: 250.0, height: 50.0)
@@ -132,33 +162,48 @@ struct SignInView: View {
                 .shadow(color: inVGreen, radius: 3, x: 0.0, y: 0.0)
                 .padding(.vertical, 20.0)
                 .onTapGesture {
-                    print("User wants to Sign In")
-                    
-                    self.auth.SignIn(email: self.email, password: self.password)
-                    
-                    print(auth.isAuthenticated)
-                    
-                    if auth.isAuthenticated {
-                        print("Hi")
-                        //NavigationLink("Hi", destination: HomeView())
+                    if email == "" || password == "" {
+                        auth.errorMessage = "Please fill out all the fields in order to create an account"
+                        displayError = true
                     } else {
-                        //do nothing
+                        auth.SignIn(email: self.email, password: self.password)
+                        
+                        if auth.errorMessage != nil {
+                            displayError = true
+                        } else {
+                            displayError = false
+                        }
                     }
+                    
+                    print(displayError)
                 }
             
-            Text("Forgot your password?")
+            NavigationLink(destination: ForgotPasswordView()){
+                Text("Forgot your password?")
                 .underline()
                 .foregroundColor(.white)
-                .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+                .padding(.all)
+                
+            }
+            .navigationBarHidden(true)
+            .navigationBarTitleDisplayMode(.inline)
             Spacer()
             HStack {
-                Text("Terms of Service").font(.subheadline).fontWeight(.light).underline()
+                NavigationLink(destination: TOSView()){
+                    Text("Terms of Service").font(.subheadline).fontWeight(.light).underline()
+                }
+                .navigationBarHidden(true)
+                    .navigationBarTitleDisplayMode(.inline)
                 Text("&")
                     .font(.subheadline)
                     .fontWeight(.light)
-                Text("Privacy Policy").font(.subheadline).fontWeight(.light).underline()
+                NavigationLink(destination: PPView()){
+                    Text("Privacy Policy").font(.subheadline).fontWeight(.light).underline()
+                }
+                .navigationBarHidden(true)
+                    .navigationBarTitleDisplayMode(.inline)
             }
-            .padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+            .padding(.all)
             .foregroundColor(.gray)
         }
     }
@@ -179,13 +224,13 @@ struct authTextField: View {
                     .foregroundColor(.gray)
                     .padding(.top)
                 TextField(placeholder, text: bindTo)
-                    .padding(/*@START_MENU_TOKEN@*/.top/*@END_MENU_TOKEN@*/)
+                    .padding(.top)
             }
             .frame(width: 300.0)
             Rectangle().foregroundColor(Color.gray)
                 .frame(width: 300, height: 0.6, alignment: .bottomLeading)
         }
-        .padding(/*@START_MENU_TOKEN@*/.all, 5.0/*@END_MENU_TOKEN@*/)
+        .padding(.all, 5.0)
         
     }
 }
@@ -202,13 +247,13 @@ struct secureAuthTextField: View {
                     .foregroundColor(.gray)
                     .padding(.top)
                 SecureField(placeholder, text: bindTo)
-                    .padding(/*@START_MENU_TOKEN@*/.top/*@END_MENU_TOKEN@*/)
+                    .padding(.top)
             }
             .frame(width: 300.0)
             Rectangle().foregroundColor(.gray)
                 .frame(width: 300, height: 0.6, alignment: .bottomLeading)
         }
-        .padding(/*@START_MENU_TOKEN@*/.all, 5.0/*@END_MENU_TOKEN@*/)
+        .padding(.all, 5.0)
         
     }
 }
@@ -220,6 +265,7 @@ struct secureAuthTextField: View {
 //MARK: Preview
 struct AuthView_Previews: PreviewProvider {
     static var previews: some View {
-        AuthView().preferredColorScheme(.dark)
+        let auth = AuthViewModel()
+        AuthView(auth: auth).preferredColorScheme(.dark)
     }
 }

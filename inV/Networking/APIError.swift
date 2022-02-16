@@ -19,8 +19,12 @@ enum APIError: Error, CustomStringConvertible {
         switch self {
         case .badURL, .parsing, .unknown:
             return "Sorry! something went wrong."
-        case .badResponse(_):
-            return "Sorry! the connection to our server failed."
+        case .badResponse(let statusCode):
+            if statusCode == 400 {
+                return "400"
+            }else {
+                return "Sorry! the connection to our server failed."
+            }
         case .url(let error):
             return error?.localizedDescription ?? "Oh no! Something went wrong."
         }
